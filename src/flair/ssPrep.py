@@ -251,27 +251,32 @@ def correctReads(bed, intTree, ssData, filePrefix, correctStrand, wDir):
         ssStrands = set()
         novelSS   = False
 
-        for x in juncs:
-            c1, c2 = x[0], x[1]
-            if c1 not in ssData:
-                ssData = ssCorrrect(c1,strand,c1Type,intTree,ssData)
-            if c2 not in ssData:
-                ssData = ssCorrrect(c2,strand,c2Type,intTree,ssData)
+        if len(juncs) == 0 or not intTree:
+            newJuncs = juncs.copy()
+            novelSS = True
+        else:
+            for x in juncs:
+                c1, c2 = x[0], x[1]
+                if c1 not in ssData:
+                    ssData = ssCorrrect(c1,strand,c1Type,intTree,ssData)
+                if c2 not in ssData:
+                    ssData = ssCorrrect(c2,strand,c2Type,intTree,ssData)
 
-            #c1Obj, c2Obj = ssData[c1], ssData[c2] unused
+                #c1Obj, c2Obj = ssData[c1], ssData[c2] unused
 
-            c1Corr = ssData[c1].ssCorr.coord
-            c2Corr = ssData[c2].ssCorr.coord
+                c1Corr = ssData[c1].ssCorr.coord
+                c2Corr = ssData[c2].ssCorr.coord
 
-            ssTypes = [ssData[c1].ssCorr.ssType, ssData[c2].ssCorr.ssType]
-            ssStrands.add(ssData[c1].ssCorr.strand)
-            ssStrands.add(ssData[c2].ssCorr.strand)
+                ssTypes = [ssData[c1].ssCorr.ssType, ssData[c2].ssCorr.ssType]
+                ssStrands.add(ssData[c1].ssCorr.strand)
+                ssStrands.add(ssData[c2].ssCorr.strand)
 
-            if None in ssTypes or ssTypes[0] == ssTypes[1]:
-                # Either two donors or two acceptors or both none.
-                novelSS = True
+                if None in ssTypes or ssTypes[0] == ssTypes[1]:
+                    # Either two donors or two acceptors or both none.
+                    novelSS = True
 
-            newJuncs.append((c1Corr,c2Corr))
+                newJuncs.append((c1Corr,c2Corr))
+        
 
         blocks, sizes, starts = juncsToBed12(bedObj.start,bedObj.end,newJuncs)
 
