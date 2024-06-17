@@ -1,3 +1,5 @@
+DEPRECATED: FLAIR2 supports single-exon genes.
+---
 # flair
 FLAIR (Full-Length Alternative Isoform analysis of RNA) for the correction, isoform definition, and alternative splicing analysis of noisy reads. FLAIR has primarily been used for nanopore cDNA, native RNA, and PacBio sequencing reads. 
 
